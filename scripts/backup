@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source ../settings/scripts/_common.sh  
+source /usr/share/yunohost/helpers
+
+#=================================================
+# DECLARE DATA AND CONF FILES TO BACKUP
+#=================================================
+ynh_script_progression --message="Declaring files to be backed up..." --weight=1
+
+#=================================================
+# BACKUP THE APP MAIN DIR
+#=================================================
+
+ynh_backup --src_path="$install_dir"
+
+#=================================================
+# BACKUP THE DATA DIR
+#=================================================
+
+ynh_backup --src_path="$data_dir" --is_big
+
+#=================================================
+# BACKUP THE NGINX CONFIGURATION
+#=================================================
+
+if [ -f "/etc/nginx/conf.d/$domain.d/$app.conf" ]; then
+    ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
+fi
+
+#=================================================
+# BACKUP THE SYSTEMD CONFIGURATION
+#=================================================
+
+ynh_backup --src_path="/etc/systemd/system/$app.service"
+
+#=================================================
+# BACKUP LOGROTATE
+#=================================================
+
+ynh_backup --src_path="/etc/logrotate.d/$app"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Backup of $app completed" --last
