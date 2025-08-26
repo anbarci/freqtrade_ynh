@@ -66,7 +66,7 @@ ram.runtime = "200M"
     [resources.sources]
         [resources.sources.main]
         url = "https://github.com/freqtrade/freqtrade/archive/refs/tags/2025.7.tar.gz"
-        sha256 = "checksum_placeholder"
+        sha256 = "7df47698f50b8eec68963009330a1d7e4e5ea4d71eef3533470ad31a4a8f0567"
 
     [resources.system_user]
     allow_shell = true
@@ -111,6 +111,3 @@ ram.runtime = "200M"
         "libxmlsec1-dev",
         "liblzma-dev"
     ]
-
-    # Freqtrade SQLite kullanır, MySQL/PostgreSQL gerekmez
-    # packages_from_raw_bash kısmını kaldırdık (compilation hatası nedeniyle)
