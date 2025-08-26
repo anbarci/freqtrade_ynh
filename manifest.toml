@@ -1,0 +1,126 @@
+packaging_format = 2
+
+id = "freqtrade"
+name = "Freqtrade"
+version = "2025.7~ynh1"
+description.en = "Free, open source crypto trading bot written in Python"
+description.tr = "Python ile yazılmış ücretsiz, açık kaynak kripto para ticaret botu"
+
+maintainers = ["your-username"]
+
+[upstream]
+license = "GPL-3.0"
+website = "https://www.freqtrade.io/"
+code = "https://github.com/freqtrade/freqtrade"
+admindoc = "https://www.freqtrade.io/en/stable/"
+userdoc = "https://www.freqtrade.io/en/stable/"
+
+[integration]
+yunohost = ">= 11.2"
+helpers_version = "2.1"
+architectures = ["all"]
+multi_instance = false
+ldap = "not_relevant"
+sso = "not_relevant"
+disk = "500M"
+ram.build = "500M"
+ram.runtime = "200M"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    [install.path]
+    type = "path"
+    default = "/freqtrade"
+
+    [install.init_main_permission]
+    type = "group"
+    default = "visitors"
+    help.en = "Freqtrade web UI access permission"
+    help.tr = "Freqtrade web arayüzü erişim izni"
+
+    [install.admin]
+    type = "user"
+    help.en = "Choose an admin user for Freqtrade"
+    help.tr = "Freqtrade için yönetici kullanıcı seçin"
+
+    [install.password]
+    type = "password"
+    help.en = "Set the password for Freqtrade web UI"
+    help.tr = "Freqtrade web arayüzü için şifre belirleyin"
+
+    [install.webserver_enabled]
+    type = "boolean"
+    default = true
+    help.en = "Enable built-in web server for management UI"
+    help.tr = "Yönetim arayüzü için dahili web sunucusunu etkinleştir"
+
+    [install.dry_run]
+    type = "boolean"
+    default = true
+    help.en = "Enable dry-run mode (recommended for testing)"
+    help.tr = "Kuru çalışma modunu etkinleştir (test için önerilir)"
+
+[resources]
+    [resources.sources]
+        [resources.sources.main]
+        url = "https://github.com/freqtrade/freqtrade/archive/refs/tags/2025.7.tar.gz"
+        sha256 = "checksum_placeholder"
+
+    [resources.system_user]
+    allow_shell = true
+
+    [resources.install_dir]
+
+    [resources.data_dir]
+    subdirs = ["user_data", "user_data/logs", "user_data/data", "user_data/strategies", "user_data/hyperopts"]
+
+    [resources.permissions]
+    main.url = "/"
+    main.show_tile = true
+    main.allowed = "visitors"
+    main.auth_header = false
+
+    [resources.ports]
+    main.default = 8080
+
+    [resources.apt]
+    packages = [
+        "python3",
+        "python3-dev",
+        "python3-pip",
+        "python3-venv", 
+        "build-essential",
+        "libssl-dev",
+        "libffi-dev",
+        "libbz2-dev",
+        "libreadline-dev",
+        "libsqlite3-dev",
+        "wget",
+        "curl",
+        "llvm",
+        "libncurses5-dev",
+        "xz-utils",
+        "tk-dev",
+        "libxml2-dev",
+        "libxmlsec1-dev",
+        "liblzma-dev",
+        "ta-lib-dev"
+    ]
+
+    packages_from_raw_bash = """
+        # TA-Lib kurulumu (gerekli dependency)
+        if ! dpkg -l | grep -q "libta-lib0-dev"; then
+            wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+            tar -xzf ta-lib-0.4.0-src.tar.gz
+            cd ta-lib/
+            ./configure --prefix=/usr/local
+            make && sudo make install
+            cd ..
+            rm -rf ta-lib ta-lib-0.4.0-src.tar.gz
+        fi
+    """
+
+    [resources.database]
+    type = "sqlite"
