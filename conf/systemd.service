@@ -1,0 +1,20 @@
+[Unit]
+Description=Freqtrade cryptocurrency trading bot
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__INSTALL_DIR__
+Environment=PATH=__INSTALL_DIR__/venv/bin
+ExecStart=__INSTALL_DIR__/venv/bin/freqtrade trade --config __DATA_DIR__/user_data/config.json --datadir __DATA_DIR__/user_data
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=__APP__
+
+[Install]
+WantedBy=multi-user.target
