@@ -92,6 +92,10 @@ ram.runtime = "200M"
         "python3-pip",
         "python3-venv", 
         "build-essential",
+        "gcc",
+        "g++",
+        "make",
+        "libc6-dev",
         "libssl-dev",
         "libffi-dev",
         "libbz2-dev",
@@ -105,22 +109,8 @@ ram.runtime = "200M"
         "tk-dev",
         "libxml2-dev",
         "libxmlsec1-dev",
-        "liblzma-dev",
-        "ta-lib-dev"
+        "liblzma-dev"
     ]
 
-    packages_from_raw_bash = """
-        # TA-Lib kurulumu (gerekli dependency)
-        if ! dpkg -l | grep -q "libta-lib0-dev"; then
-            wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
-            tar -xzf ta-lib-0.4.0-src.tar.gz
-            cd ta-lib/
-            ./configure --prefix=/usr/local
-            make && sudo make install
-            cd ..
-            rm -rf ta-lib ta-lib-0.4.0-src.tar.gz
-        fi
-    """
-
-    [resources.database]
-    type = "sqlite"
+    # Freqtrade SQLite kullanır, MySQL/PostgreSQL gerekmez
+    # packages_from_raw_bash kısmını kaldırdık (compilation hatası nedeniyle)
