@@ -18,7 +18,7 @@ userdoc = "https://www.freqtrade.io/en/stable/"
 [integration]
 yunohost = ">= 11.2"
 helpers_version = "2.1"
-architectures = ["all"]
+architectures = "all"
 multi_instance = false
 ldap = "not_relevant"
 sso = "not_relevant"
